@@ -376,7 +376,7 @@ target_include_directories(${OBJECT_FILE_NAME} PRIVATE
 
 target_compile_options(${OBJECT_FILE_NAME} PRIVATE
         -Wno-pointer-arith
-        -mfpu=neon
+#        -mfpu=neon
         -Wno-missing-braces
         )
 

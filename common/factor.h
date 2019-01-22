@@ -48,41 +48,41 @@
 // A few macros to check pointers and their address range to make sure there's
 // no unwanted overlap between any two of them
 #define NE10_CHECKPOINTER_DstSrcCst \
-   if ( (void *)dst < (void *)src ) \
-    { assert ( (void *)dst + count <= (void *)src ); } \
-   else if ( (void *)dst > (void *)src ) \
-    { assert ( (void *)src + count <= (void *)dst ); }
+   if ( (uintptr_t)dst < (uintptr_t)src ) \
+    { assert ( (uintptr_t)dst + count <= (uintptr_t)src ); } \
+   else if ( (uintptr_t)dst > (uintptr_t)src ) \
+    { assert ( (uintptr_t)src + count <= (uintptr_t)dst ); }
 
 #define NE10_CHECKPOINTER_DstSrc NE10_CHECKPOINTER_DstSrcCst
 
 #define NE10_CHECKPOINTER_3POINTER(arg1, arg2, arg3) \
-   if ( (void *)arg1 < (void *)arg2 ) \
-    { assert ( (void *)arg1 + count <= (void *)arg2 ); } \
-   else if ( (void *)arg1 > (void *)arg2 ) \
-    { assert ( (void *)arg2 + count <= (void *)arg1 ); } \
-   if ( (void *)arg1 < (void *)arg3 ) \
-    { assert ( (void *)arg1 + count <= (void *)arg3 ); } \
-   else if ( (void *)arg1 > (void *)arg3 ) \
-    { assert ( (void *)arg3 + count <= (void *)arg1 ); } \
-   if ( (void *)arg3 < (void *)arg2 ) \
-    { assert ( (void *)arg3 + count <= (void *)arg2 ); } \
-   else if ( (void *)arg3 > (void *)arg2 ) \
-    { assert ( (void *)arg2 + count <= (void *)arg3 ); }
+   if ( (uintptr_t)arg1 < (uintptr_t)arg2 ) \
+    { assert ( (uintptr_t)arg1 + count <= (uintptr_t)arg2 ); } \
+   else if ( (uintptr_t)arg1 > (uintptr_t)arg2 ) \
+    { assert ( (uintptr_t)arg2 + count <= (uintptr_t)arg1 ); } \
+   if ( (uintptr_t)arg1 < (uintptr_t)arg3 ) \
+    { assert ( (uintptr_t)arg1 + count <= (uintptr_t)arg3 ); } \
+   else if ( (uintptr_t)arg1 > (uintptr_t)arg3 ) \
+    { assert ( (uintptr_t)arg3 + count <= (uintptr_t)arg1 ); } \
+   if ( (uintptr_t)arg3 < (uintptr_t)arg2 ) \
+    { assert ( (uintptr_t)arg3 + count <= (uintptr_t)arg2 ); } \
+   else if ( (uintptr_t)arg3 > (uintptr_t)arg2 ) \
+    { assert ( (uintptr_t)arg2 + count <= (uintptr_t)arg3 ); }
 
 #define NE10_CHECKPOINTER_4POINTER(arg1, arg2, arg3, arg4) \
    NE10_CHECKPOINTER_3POINTER(arg1, arg2, arg3) \
-   if ( (void *)arg1 < (void *)arg4 ) \
-    { assert ( (void *)arg1 + count <= (void *)arg4 ); } \
-   else if ( (void *)arg1 > (void *)arg4 ) \
-    { assert ( (void *)arg4 + count <= (void *)arg1 ); } \
-   if ( (void *)arg2 < (void *)arg4 ) \
-    { assert ( (void *)arg2 + count <= (void *)arg4 ); } \
-   else if ( (void *)arg2 > (void *)arg4 ) \
-    { assert ( (void *)arg4 + count <= (void *)arg2 ); } \
-   if ( (void *)arg4 < (void *)arg3 ) \
-    { assert ( (void *)arg4 + count <= (void *)arg3 ); } \
-   else if ( (void *)arg4 > (void *)arg3 ) \
-    { assert ( (void *)arg3 + count <= (void *)arg4 ); }
+   if ( (uintptr_t)arg1 < (uintptr_t)arg4 ) \
+    { assert ( (uintptr_t)arg1 + count <= (uintptr_t)arg4 ); } \
+   else if ( (uintptr_t)arg1 > (uintptr_t)arg4 ) \
+    { assert ( (uintptr_t)arg4 + count <= (uintptr_t)arg1 ); } \
+   if ( (uintptr_t)arg2 < (uintptr_t)arg4 ) \
+    { assert ( (uintptr_t)arg2 + count <= (uintptr_t)arg4 ); } \
+   else if ( (uintptr_t)arg2 > (uintptr_t)arg4 ) \
+    { assert ( (uintptr_t)arg4 + count <= (uintptr_t)arg2 ); } \
+   if ( (uintptr_t)arg4 < (uintptr_t)arg3 ) \
+    { assert ( (uintptr_t)arg4 + count <= (uintptr_t)arg3 ); } \
+   else if ( (uintptr_t)arg4 > (uintptr_t)arg3 ) \
+    { assert ( (uintptr_t)arg3 + count <= (uintptr_t)arg4 ); }
 
 
 
@@ -190,18 +190,18 @@
 
 #define NE10_DstSrcCst_MAINLOOP_VEC3F_NEON(loopCode) { \
      n_src1 = vld1q_f32( (float32_t*)src ); \
-     src = ((void*)src)+(4*sizeof(ne10_float32_t)); \
+     src = (void *)(((uintptr_t)src)+(4*sizeof(ne10_float32_t))); \
      n_src2 = vld1q_f32( (float32_t*)src ); \
-     src = ((void*)src)+(4*sizeof(ne10_float32_t)); \
+     src = (void *)(((uintptr_t)src)+(4*sizeof(ne10_float32_t))); \
      n_src3 = vld1q_f32( (float32_t*)src ); \
-     src = ((void*)src)+(4*sizeof(ne10_float32_t)); \
+     src = (void *)(((uintptr_t)src)+(4*sizeof(ne10_float32_t))); \
      loopCode; /* The main loop iterates through three 3D vectors each time */ \
      vst1q_f32 ( (float32_t*)dst , n_dst1 ); \
-     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
+     dst = (void *)(((uintptr_t)dst)+(4*sizeof(ne10_float32_t))); \
      vst1q_f32 ( (float32_t*)dst , n_dst2 ); \
-     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
+     dst = (void *)(((uintptr_t)dst)+(4*sizeof(ne10_float32_t))); \
      vst1q_f32 ( (float32_t*)dst , n_dst3 ); \
-     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
+     dst = (void *)(((uintptr_t)dst)+(4*sizeof(ne10_float32_t))); \
   }
 
 #define NE10_DstSrcCst_SECONDLOOP_VEC3F_NEON(loopCode) { \
@@ -323,24 +323,24 @@
 
 #define NE10_DstAccSrcCst_MAINLOOP_VEC3F_NEON(loopCode) { \
      n_acc1 = vld1q_f32( (float32_t*)acc ); /* Load accumulator values */ \
-     acc = ((void*)acc)+(4*sizeof(ne10_float32_t)); \
+     acc = (void *)(((uintptr_t)acc)+(4*sizeof(ne10_float32_t))); \
      n_acc2 = vld1q_f32( (float32_t*)acc ); \
-     acc = ((void*)acc)+(4*sizeof(ne10_float32_t)); \
+     acc = (void *)(((uintptr_t)acc)+(4*sizeof(ne10_float32_t))); \
      n_acc3 = vld1q_f32( (float32_t*)acc ); \
-     acc = ((void*)acc)+(4*sizeof(ne10_float32_t)); \
+     acc = ((void *)(((uintptr_t)acc)+(4*sizeof(ne10_float32_t)))); \
      n_src1 = vld1q_f32( (float32_t*)src ); /* Load source values */ \
-     src = ((void*)src)+(4*sizeof(ne10_float32_t)); \
+     src = (void *)(((uintptr_t)src)+(4*sizeof(ne10_float32_t))); \
      n_src2 = vld1q_f32( (float32_t*)src ); \
-     src = ((void*)src)+(4*sizeof(ne10_float32_t)); \
+     src = (void *)(((uintptr_t)src)+(4*sizeof(ne10_float32_t))); \
      n_src3 = vld1q_f32( (float32_t*)src ); \
-     src = ((void*)src)+(4*sizeof(ne10_float32_t)); \
+     src = (void *)(((uintptr_t)src)+(4*sizeof(ne10_float32_t))); \
      loopCode; /* The main loop iterates through three 3D vectors each time */ \
      vst1q_f32 ( (float32_t*)dst , n_dst1 ); /* Store the results back into the memory */ \
-     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
+     dst = (void *)(((uintptr_t)dst)+(4*sizeof(ne10_float32_t))); \
      vst1q_f32 ( (float32_t*)dst , n_dst2 ); \
-     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
+     dst = (void *)(((uintptr_t)dst)+(4*sizeof(ne10_float32_t))); \
      vst1q_f32 ( (float32_t*)dst , n_dst3 ); \
-     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
+     dst = (void *)(((uintptr_t)dst)+(4*sizeof(ne10_float32_t))); \
   }
 
 #define NE10_DstAccSrcCst_SECONDLOOP_VEC3F_NEON(loopCode) { \
@@ -454,11 +454,11 @@
 #define NE10_DstCst_MAINLOOP_VEC3F_NEON(loopCode) { \
      loopCode; /* The main loop iterates through three 3D vectors each time */ \
      vst1q_f32 ( (float32_t*)dst , n_cst1 ); \
-     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
+     dst = (void *)(((uintptr_t)dst)+(4*sizeof(ne10_float32_t))); \
      vst1q_f32 ( (float32_t*)dst , n_cst2 ); \
-     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
+     dst = (void *)(((uintptr_t)dst)+(4*sizeof(ne10_float32_t))); \
      vst1q_f32 ( (float32_t*)dst , n_cst3 ); \
-     dst = ((void*)dst)+(4*sizeof(ne10_float32_t)); \
+     dst = (void *)(((uintptr_t)dst)+(4*sizeof(ne10_float32_t))); \
   }
 
 #define NE10_DstCst_SECONDLOOP_VEC3F_NEON(loopCode) { \
