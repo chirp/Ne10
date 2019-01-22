@@ -46,7 +46,7 @@ set(NE10_NEON_SRCS )
 #Tell CMake these files need to go to the C compiler
 function(set_file_to_c files)
     foreach(file ${${files}})
-        set_property(SOURCE ${file} PROPERTY LANGUAGE C)
+        set_source_files_properties(${file} PROPERTIES COMPILE_OPTIONS "-mfpu=neon" LANGUAGE C)
     endforeach(file)
 endfunction()
 
@@ -125,7 +125,7 @@ if(NE10_ENABLE_MATH)
     # Tell CMake these files need to be compiled with "-mfpu=neon"
     if("${NE10_TARGET_ARCH}" STREQUAL "armv7")
         foreach(intrinsic_file ${NE10_MATH_INTRINSIC_SRCS})
-            set_source_files_properties(${intrinsic_file} PROPERTIES COMPILE_OPTION "-mfpu=neon" )
+            set_source_files_properties(${intrinsic_file} PROPERTIES COMPILE_OPTIONS "-mfpu=neon")
         endforeach(intrinsic_file)
     endif()
 
@@ -240,7 +240,7 @@ if(NE10_ENABLE_DSP)
 
     if("${NE10_TARGET_ARCH}" STREQUAL "armv7")
         foreach(intrinsic_file ${NE10_DSP_INTRINSIC_SRCS})
-            set_source_files_properties(${intrinsic_file} PROPERTIES COMPILE_OPTION "-mfpu=neon" )
+            set_source_files_properties(${intrinsic_file} PROPERTIES COMPILE_OPTIONS "-mfpu=neon")
         endforeach(intrinsic_file)
     endif()
 
@@ -289,7 +289,7 @@ if(NE10_ENABLE_IMGPROC)
     # Tell CMake these files need to be compiled with "-mfpu=neon"
     if("${NE10_TARGET_ARCH}" STREQUAL "armv7")
         foreach(intrinsic_file ${NE10_IMGPROC_INTRINSIC_SRCS})
-            set_source_files_properties(${intrinsic_file} PROPERTIES COMPILE_OPTION "-mfpu=neon" )
+            set_source_files_properties(${intrinsic_file} PROPERTIES COMPILE_OPTIONS "-mfpu=neon")
         endforeach(intrinsic_file)
     endif()
     # Add image processing init files.
@@ -335,7 +335,7 @@ if(NE10_ENABLE_PHYSICS)
     # Tell CMake these files need to be compiled with "-mfpu=neon"
     if("${NE10_TARGET_ARCH}" STREQUAL "armv7")
         foreach(intrinsic_file ${NE10_PHYSICS_INTRINSIC_SRCS})
-            set_source_files_properties(${intrinsic_file} PROPERTIES COMPILE_OPTION "-mfpu=neon" )
+            set_source_files_properties(${intrinsic_file} PROPERTIES COMPILE_OPTIONS "-mfpu=neon")
         endforeach(intrinsic_file)
     endif()
     # Add physics init files.
@@ -375,8 +375,6 @@ target_include_directories(${OBJECT_FILE_NAME} PRIVATE
 )
 
 target_compile_options(${OBJECT_FILE_NAME} PRIVATE
-        -Wno-pointer-arith
-#        -mfpu=neon
         -Wno-missing-braces
         )
 
