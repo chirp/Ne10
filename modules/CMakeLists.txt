@@ -47,8 +47,8 @@ set(NE10_NEON_SRCS )
 function(set_file_to_c files)
     foreach(file ${${files}})
         set_property(SOURCE ${file} APPEND PROPERTY LANGUAGE C)
-        set_property(SOURCE ${file} APPEND PROPERTY COMPILE_OPTIONS -x assembler-with-cpp)
         set_property(SOURCE ${file} APPEND PROPERTY COMPILE_OPTIONS -mfpu=neon)
+        set_property(SOURCE ${file} APPEND PROPERTY COMPILE_OPTIONS -x assembler-with-cpp)
     endforeach(file)
 endfunction()
 
@@ -378,6 +378,11 @@ add_library(${OBJECT_FILE_NAME} OBJECT
         ${NE10_INIT_SRCS}
         )
 
+# Like for libtomcrypt the pedantic flag triggers some warnings with GCC.
+get_target_property(flags ${OBJECT_FILE_NAME} COMPILE_OPTIONS)
+list(REMOVE_ITEM flags -Wpedantic)
+set_target_properties(${OBJECT_FILE_NAME} PROPERTIES COMPILE_OPTIONS "${flags}")
+
 target_include_directories(${OBJECT_FILE_NAME} PRIVATE
         ${PROJECT_SOURCE_DIR}/inc
         ${PROJECT_SOURCE_DIR}/common
@@ -386,6 +391,9 @@ target_include_directories(${OBJECT_FILE_NAME} PRIVATE
 
 target_compile_options(${OBJECT_FILE_NAME} PRIVATE
         -Wno-missing-braces
+        -Wno-unused-function
+        -Wno-maybe-uninitialized
+        -Wno-unused-local-typedefs
         )
 
 if(NE10_BUILD_STATIC OR ANDROID_PLATFORM OR IOS_DEMO)
