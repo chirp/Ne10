@@ -31,6 +31,7 @@
 
 ne10_result_t ne10_init_dsp (ne10_int32_t is_NEON_available)
 {
+#if !defined(CHIRP_RASPBIAN)
     if (NE10_OK == is_NEON_available)
     {
         ne10_fft_alloc_c2c_float32 = ne10_fft_alloc_c2c_float32_neon;
@@ -83,7 +84,9 @@ ne10_result_t ne10_init_dsp (ne10_int32_t is_NEON_available)
         ne10_iir_lattice_float = ne10_iir_lattice_float_c;
 #endif // ENABLE_NE10_IIR_LATTICE_FLOAT_NEON
     }
-    else
+#endif
+
+    if (NE10_ERR == is_NEON_available)
     {
         ne10_fft_alloc_c2c_float32 = ne10_fft_alloc_c2c_float32_c;
         ne10_fft_alloc_c2c_int32 = ne10_fft_alloc_c2c_int32_c;
@@ -107,6 +110,7 @@ ne10_result_t ne10_init_dsp (ne10_int32_t is_NEON_available)
 
         ne10_iir_lattice_float = ne10_iir_lattice_float_c;
     }
+
     return NE10_OK;
 }
 

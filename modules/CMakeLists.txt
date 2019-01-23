@@ -46,7 +46,9 @@ set(NE10_NEON_SRCS )
 #Tell CMake these files need to go to the C compiler
 function(set_file_to_c files)
     foreach(file ${${files}})
-        set_source_files_properties(${file} PROPERTIES COMPILE_OPTIONS "-mfpu=neon" LANGUAGE C)
+        set_property(SOURCE ${file} APPEND PROPERTY LANGUAGE C)
+        set_property(SOURCE ${file} APPEND PROPERTY COMPILE_OPTIONS -x assembler-with-cpp)
+        set_property(SOURCE ${file} APPEND PROPERTY COMPILE_OPTIONS -mfpu=neon)
     endforeach(file)
 endfunction()
 
@@ -163,12 +165,17 @@ if(NE10_ENABLE_MATH)
     # Add math files
     set(NE10_INIT_SRCS ${NE10_INIT_SRCS} ${NE10_MATH_INIT_SRCS})
     set(NE10_C_SRCS ${NE10_C_SRCS} ${NE10_MATH_C_SRCS})
-    set(NE10_INTRINSIC_SRCS ${NE10_INTRINSIC_SRCS} ${NE10_MATH_INTRINSIC_SRCS})
-    if(IOS_PLATFORM)
-        set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_IOS_NEON_SRCS})
-    else(IOS_PLATFORM)
-        set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_NEON_SRCS})
-    endif(IOS_PLATFORM)
+
+    # Because the RPI toolchain target the oldest cpu supported by one of the
+    # raspberry pi the intrinsinc / assembly files are not supported.
+    if(NOT ${OS} STREQUAL "raspbian")
+        set(NE10_INTRINSIC_SRCS ${NE10_INTRINSIC_SRCS} ${NE10_MATH_INTRINSIC_SRCS})
+        if(IOS_PLATFORM)
+            set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_IOS_NEON_SRCS})
+        else(IOS_PLATFORM)
+            set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_NEON_SRCS})
+        endif(IOS_PLATFORM)
+    endif()
 
 endif()
 
@@ -256,12 +263,15 @@ if(NE10_ENABLE_DSP)
     # Add dsp files
     set(NE10_INIT_SRCS ${NE10_INIT_SRCS} ${NE10_DSP_INIT_SRCS})
     set(NE10_C_SRCS ${NE10_C_SRCS} ${NE10_DSP_C_SRCS})
-    set(NE10_INTRINSIC_SRCS ${NE10_INTRINSIC_SRCS} ${NE10_DSP_INTRINSIC_SRCS})
-    if(IOS_PLATFORM)
-        set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_DSP_IOS_NEON_SRCS})
-    else(IOS_PLATFORM)
-        set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_DSP_NEON_SRCS})
-    endif(IOS_PLATFORM)
+
+    if(NOT ${OS} STREQUAL "raspbian")
+        set(NE10_INTRINSIC_SRCS ${NE10_INTRINSIC_SRCS} ${NE10_DSP_INTRINSIC_SRCS})
+        if(IOS_PLATFORM)
+            set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_DSP_IOS_NEON_SRCS})
+        else(IOS_PLATFORM)
+            set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_DSP_NEON_SRCS})
+        endif(IOS_PLATFORM)
+    endif()
 endif()
 
 if(NE10_ENABLE_IMGPROC)
