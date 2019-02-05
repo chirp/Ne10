@@ -31,7 +31,7 @@
 
 ne10_result_t ne10_init_math (int is_NEON_available)
 {
-#if !defined(CHIRP_RASPBIAN)
+#if !defined(CHIRP_RASPBIAN) && !defined(CHIRP_MATHS_ARMV8A_DSP)
     if (NE10_OK == is_NEON_available)
     {
         ne10_addc_float = ne10_addc_float_neon;

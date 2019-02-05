@@ -168,7 +168,7 @@ if(NE10_ENABLE_MATH)
 
     # Because the RPI toolchain target the oldest cpu supported by one of the
     # raspberry pi the intrinsinc / assembly files are not supported.
-    if(NOT ${OS} STREQUAL "raspbian")
+    if(NOT ${OS} STREQUAL "raspbian" AND NOT ${NE10_TARGET_ARCH} STREQUAL "aarch64")
         set(NE10_INTRINSIC_SRCS ${NE10_INTRINSIC_SRCS} ${NE10_MATH_INTRINSIC_SRCS})
         if(IOS_PLATFORM)
             set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_IOS_NEON_SRCS})
