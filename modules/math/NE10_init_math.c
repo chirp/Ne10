@@ -123,7 +123,7 @@ ne10_result_t ne10_init_math (int is_NEON_available)
         ne10_transmat_2x2f = ne10_transmat_2x2f_neon;
         ne10_identitymat_2x2f = ne10_identitymat_2x2f_neon;
 
-        return NE10_OK
+        return NE10_OK;
     }
 
 #endif
