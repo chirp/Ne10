@@ -31,7 +31,11 @@
 
 ne10_result_t ne10_init_math (int is_NEON_available)
 {
-#if !defined(CHIRP_RASPBIAN) && defined(CHIRP_MATHS_ARMV7A_DSP)
+/*------------------------------------------------------------------------------
+ * The neon assembly files haven't been yet fully implemented for aarch64
+ * for math functions. See https://github.com/projectNe10/Ne10/issues/207
+ *----------------------------------------------------------------------------*/
+#if defined(CHIRP_MATHS_ARMV7A_DSP)
     if (NE10_OK == is_NEON_available)
     {
         ne10_addc_float = ne10_addc_float_neon;

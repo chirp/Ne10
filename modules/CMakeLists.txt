@@ -166,16 +166,12 @@ if(NE10_ENABLE_MATH)
     set(NE10_INIT_SRCS ${NE10_INIT_SRCS} ${NE10_MATH_INIT_SRCS})
     set(NE10_C_SRCS ${NE10_C_SRCS} ${NE10_MATH_C_SRCS})
 
-    # Because the RPI toolchain target the oldest cpu supported by one of the
-    # raspberry pi the intrinsinc / assembly files are not supported.
-    if(NOT ${OS} STREQUAL "raspbian" AND NOT ${NE10_TARGET_ARCH} STREQUAL "aarch64")
-        set(NE10_INTRINSIC_SRCS ${NE10_INTRINSIC_SRCS} ${NE10_MATH_INTRINSIC_SRCS})
-        if(IOS_PLATFORM)
-            set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_IOS_NEON_SRCS})
-        else(IOS_PLATFORM)
-            set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_NEON_SRCS})
-        endif(IOS_PLATFORM)
-    endif()
+    set(NE10_INTRINSIC_SRCS ${NE10_INTRINSIC_SRCS} ${NE10_MATH_INTRINSIC_SRCS})
+    if(IOS_PLATFORM)
+        set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_IOS_NEON_SRCS})
+    else(IOS_PLATFORM)
+        set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_NEON_SRCS})
+    endif(IOS_PLATFORM)
 
 endif()
 
@@ -264,14 +260,12 @@ if(NE10_ENABLE_DSP)
     set(NE10_INIT_SRCS ${NE10_INIT_SRCS} ${NE10_DSP_INIT_SRCS})
     set(NE10_C_SRCS ${NE10_C_SRCS} ${NE10_DSP_C_SRCS})
 
-    if(NOT ${OS} STREQUAL "raspbian")
-        set(NE10_INTRINSIC_SRCS ${NE10_INTRINSIC_SRCS} ${NE10_DSP_INTRINSIC_SRCS})
-        if(IOS_PLATFORM)
-            set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_DSP_IOS_NEON_SRCS})
-        else(IOS_PLATFORM)
-            set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_DSP_NEON_SRCS})
-        endif(IOS_PLATFORM)
-    endif()
+    set(NE10_INTRINSIC_SRCS ${NE10_INTRINSIC_SRCS} ${NE10_DSP_INTRINSIC_SRCS})
+    if(IOS_PLATFORM)
+        set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_DSP_IOS_NEON_SRCS})
+    else(IOS_PLATFORM)
+        set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_DSP_NEON_SRCS})
+    endif(IOS_PLATFORM)
 endif()
 
 if(NE10_ENABLE_IMGPROC)
@@ -387,7 +381,7 @@ target_include_directories(${OBJECT_FILE_NAME} PRIVATE
         ${PROJECT_SOURCE_DIR}/inc
         ${PROJECT_SOURCE_DIR}/common
         ${PROJECT_SOURCE_DIR}/modules/math
-)
+        )
 
 target_compile_options(${OBJECT_FILE_NAME} PRIVATE
         -Wno-missing-braces
