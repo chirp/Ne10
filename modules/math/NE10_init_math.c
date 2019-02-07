@@ -129,7 +129,6 @@ ne10_result_t ne10_init_math (int is_NEON_available)
 
         return NE10_OK;
     }
-
 #endif
 
     ne10_addc_float = ne10_addc_float_c;
