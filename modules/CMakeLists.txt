@@ -166,16 +166,16 @@ if(NE10_ENABLE_MATH)
     set(NE10_INIT_SRCS ${NE10_INIT_SRCS} ${NE10_MATH_INIT_SRCS})
     set(NE10_C_SRCS ${NE10_C_SRCS} ${NE10_MATH_C_SRCS})
 
-    set(NE10_INTRINSIC_SRCS ${NE10_INTRINSIC_SRCS} ${NE10_MATH_INTRINSIC_SRCS})
-    if(IOS_PLATFORM)
-        set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_IOS_NEON_SRCS})
-    else(IOS_PLATFORM)
-        # Again, the custom call to this CMakeLists file implies to do this check
-        # as the assembly Neon as not been done yet
-        if("${NE10_TARGET_ARCH}" STREQUAL "armv7")
-            set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_NEON_SRCS})
-        endif()
-    endif(IOS_PLATFORM)
+    # Again, the custom call to this CMakeLists file implies to do this check
+    # as the assembly Neon as not been done yet
+    if(NOT ${OS} STREQUAL "raspbian" AND NOT ${NE10_TARGET_ARCH} STREQUAL "aarch64")
+        set(NE10_INTRINSIC_SRCS ${NE10_INTRINSIC_SRCS} ${NE10_MATH_INTRINSIC_SRCS})
+        if(IOS_PLATFORM)
+            set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_IOS_NEON_SRCS})
+        else(IOS_PLATFORM)
+                set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_NEON_SRCS})
+        endif(IOS_PLATFORM)
+    endif()
 
 endif()
 
