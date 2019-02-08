@@ -170,7 +170,11 @@ if(NE10_ENABLE_MATH)
     if(IOS_PLATFORM)
         set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_IOS_NEON_SRCS})
     else(IOS_PLATFORM)
-        set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_NEON_SRCS})
+        # Again, the custom call to this CMakeLists file implies to do this check
+        # as the assembly Neon as not been done yet
+        if("${NE10_TARGET_ARCH}" STREQUAL "armv7")
+            set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_NEON_SRCS})
+        endif()
     endif(IOS_PLATFORM)
 
 endif()
