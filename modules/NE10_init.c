@@ -45,7 +45,6 @@ ne10_result_t ne10_init()
 {
     ne10_result_t status = NE10_ERR;
 #ifndef __MACH__
-#if !defined(CHIRP_RASPBIAN)
     FILE*   infofile = NULL;               // To open the file /proc/cpuinfo
     ne10_int8_t    cpuinfo[CPUINFO_BUFFER_SIZE];  // The buffer to read in the string
     ne10_uint32_t  bytes = 0;                     // Numbers of bytes read from the file
@@ -80,7 +79,6 @@ ne10_result_t ne10_init()
     {
         is_NEON_available = NE10_OK;
     }
-#endif
 #else  //__MACH__
     is_NEON_available = NE10_OK;
 #endif //__MACH__
