@@ -31,6 +31,11 @@
 
 ne10_result_t ne10_init_math (int is_NEON_available)
 {
+/*------------------------------------------------------------------------------
+ * The neon assembly files haven't been yet fully implemented for aarch64
+ * for math functions. See https://github.com/projectNe10/Ne10/issues/207
+ *----------------------------------------------------------------------------*/
+#if defined(CHIRP_MATHS_ARMV7A_DSP)
     if (NE10_OK == is_NEON_available)
     {
         ne10_addc_float = ne10_addc_float_neon;
@@ -121,98 +126,100 @@ ne10_result_t ne10_init_math (int is_NEON_available)
         ne10_identitymat_3x3f = ne10_identitymat_3x3f_neon;
         ne10_transmat_2x2f = ne10_transmat_2x2f_neon;
         ne10_identitymat_2x2f = ne10_identitymat_2x2f_neon;
-    }
-    else
-    {
-        ne10_addc_float = ne10_addc_float_c;
-        ne10_addc_vec2f = ne10_addc_vec2f_c;
-        ne10_addc_vec3f = ne10_addc_vec3f_c;
-        ne10_addc_vec4f = ne10_addc_vec4f_c;
-        ne10_subc_float = ne10_subc_float_c;
-        ne10_subc_vec2f = ne10_subc_vec2f_c;
-        ne10_subc_vec3f = ne10_subc_vec3f_c;
-        ne10_subc_vec4f = ne10_subc_vec4f_c;
-        ne10_rsbc_float = ne10_rsbc_float_c;
-        ne10_rsbc_vec2f = ne10_rsbc_vec2f_c;
-        ne10_rsbc_vec3f = ne10_rsbc_vec3f_c;
-        ne10_rsbc_vec4f = ne10_rsbc_vec4f_c;
-        ne10_mulc_float = ne10_mulc_float_c;
-        ne10_mulc_vec2f = ne10_mulc_vec2f_c;
-        ne10_mulc_vec3f = ne10_mulc_vec3f_c;
-        ne10_mulc_vec4f = ne10_mulc_vec4f_c;
-        ne10_divc_float = ne10_divc_float_c;
-        ne10_divc_vec2f = ne10_divc_vec2f_c;
-        ne10_divc_vec3f = ne10_divc_vec3f_c;
-        ne10_divc_vec4f = ne10_divc_vec4f_c;
-        ne10_setc_float = ne10_setc_float_c;
-        ne10_setc_vec2f = ne10_setc_vec2f_c;
-        ne10_setc_vec3f = ne10_setc_vec3f_c;
-        ne10_setc_vec4f = ne10_setc_vec4f_c;
-        ne10_mlac_float = ne10_mlac_float_c;
-        ne10_mlac_vec2f = ne10_mlac_vec2f_c;
-        ne10_mlac_vec3f = ne10_mlac_vec3f_c;
-        ne10_mlac_vec4f = ne10_mlac_vec4f_c;
-        ne10_add_float = ne10_add_float_c;
-        ne10_sub_float = ne10_sub_float_c;
-        ne10_mul_float = ne10_mul_float_c;
-        ne10_div_float = ne10_div_float_c;
-        ne10_mla_float = ne10_mla_float_c;
-        ne10_abs_float = ne10_abs_float_c;
-        ne10_len_vec2f = ne10_len_vec2f_c;
-        ne10_len_vec3f = ne10_len_vec3f_c;
-        ne10_len_vec4f = ne10_len_vec4f_c;
-        ne10_normalize_vec2f = ne10_normalize_vec2f_c;
-        ne10_normalize_vec3f = ne10_normalize_vec3f_c;
-        ne10_normalize_vec4f = ne10_normalize_vec4f_c;
 
-        ne10_abs_vec2f = ne10_abs_vec2f_c;
-        ne10_abs_vec3f = ne10_abs_vec3f_c;
-        ne10_abs_vec4f = ne10_abs_vec4f_c;
-        ne10_vmul_vec2f = ne10_vmul_vec2f_c;
-        ne10_vmul_vec3f = ne10_vmul_vec3f_c;
-        ne10_vmul_vec4f = ne10_vmul_vec4f_c;
-        ne10_vdiv_vec2f = ne10_vdiv_vec2f_c;
-        ne10_vdiv_vec3f = ne10_vdiv_vec3f_c;
-        ne10_vdiv_vec4f = ne10_vdiv_vec4f_c;
-        ne10_vmla_vec2f = ne10_vmla_vec2f_c;
-        ne10_vmla_vec3f = ne10_vmla_vec3f_c;
-        ne10_vmla_vec4f = ne10_vmla_vec4f_c;
-        ne10_add_vec2f = ne10_add_vec2f_c;
-        ne10_add_vec3f = ne10_add_vec3f_c;
-        ne10_add_vec4f = ne10_add_vec4f_c;
-        ne10_sub_vec2f = ne10_sub_vec2f_c;
-        ne10_sub_vec3f = ne10_sub_vec3f_c;
-        ne10_sub_vec4f = ne10_sub_vec4f_c;
-        ne10_dot_vec2f = ne10_dot_vec2f_c;
-        ne10_dot_vec3f = ne10_dot_vec3f_c;
-        ne10_dot_vec4f = ne10_dot_vec4f_c;
-        ne10_cross_vec3f = ne10_cross_vec3f_c;
-
-        ne10_addmat_2x2f = ne10_addmat_2x2f_c;
-        ne10_addmat_3x3f = ne10_addmat_3x3f_c;
-        ne10_addmat_4x4f = ne10_addmat_4x4f_c;
-        ne10_submat_2x2f = ne10_submat_2x2f_c;
-        ne10_submat_3x3f = ne10_submat_3x3f_c;
-        ne10_submat_4x4f = ne10_submat_4x4f_c;
-        ne10_mulmat_2x2f = ne10_mulmat_2x2f_c;
-        ne10_mulmat_3x3f = ne10_mulmat_3x3f_c;
-        ne10_mulmat_4x4f = ne10_mulmat_4x4f_c;
-        ne10_mulcmatvec_cm2x2f_v2f = ne10_mulcmatvec_cm2x2f_v2f_c;
-        ne10_mulcmatvec_cm3x3f_v3f = ne10_mulcmatvec_cm3x3f_v3f_c;
-        ne10_mulcmatvec_cm4x4f_v4f = ne10_mulcmatvec_cm4x4f_v4f_c;
-        ne10_detmat_2x2f = ne10_detmat_2x2f_c;
-        ne10_detmat_3x3f = ne10_detmat_3x3f_c;
-        ne10_detmat_4x4f = ne10_detmat_4x4f_c;
-        ne10_invmat_2x2f = ne10_invmat_2x2f_c;
-        ne10_invmat_3x3f = ne10_invmat_3x3f_c;
-        ne10_invmat_4x4f = ne10_invmat_4x4f_c;
-        ne10_transmat_4x4f = ne10_transmat_4x4f_c;
-        ne10_identitymat_4x4f = ne10_identitymat_4x4f_c;
-        ne10_transmat_3x3f = ne10_transmat_3x3f_c;
-        ne10_identitymat_3x3f = ne10_identitymat_3x3f_c;
-        ne10_transmat_2x2f = ne10_transmat_2x2f_c;
-        ne10_identitymat_2x2f = ne10_identitymat_2x2f_c;
+        return NE10_OK;
     }
+#endif
+
+    ne10_addc_float = ne10_addc_float_c;
+    ne10_addc_vec2f = ne10_addc_vec2f_c;
+    ne10_addc_vec3f = ne10_addc_vec3f_c;
+    ne10_addc_vec4f = ne10_addc_vec4f_c;
+    ne10_subc_float = ne10_subc_float_c;
+    ne10_subc_vec2f = ne10_subc_vec2f_c;
+    ne10_subc_vec3f = ne10_subc_vec3f_c;
+    ne10_subc_vec4f = ne10_subc_vec4f_c;
+    ne10_rsbc_float = ne10_rsbc_float_c;
+    ne10_rsbc_vec2f = ne10_rsbc_vec2f_c;
+    ne10_rsbc_vec3f = ne10_rsbc_vec3f_c;
+    ne10_rsbc_vec4f = ne10_rsbc_vec4f_c;
+    ne10_mulc_float = ne10_mulc_float_c;
+    ne10_mulc_vec2f = ne10_mulc_vec2f_c;
+    ne10_mulc_vec3f = ne10_mulc_vec3f_c;
+    ne10_mulc_vec4f = ne10_mulc_vec4f_c;
+    ne10_divc_float = ne10_divc_float_c;
+    ne10_divc_vec2f = ne10_divc_vec2f_c;
+    ne10_divc_vec3f = ne10_divc_vec3f_c;
+    ne10_divc_vec4f = ne10_divc_vec4f_c;
+    ne10_setc_float = ne10_setc_float_c;
+    ne10_setc_vec2f = ne10_setc_vec2f_c;
+    ne10_setc_vec3f = ne10_setc_vec3f_c;
+    ne10_setc_vec4f = ne10_setc_vec4f_c;
+    ne10_mlac_float = ne10_mlac_float_c;
+    ne10_mlac_vec2f = ne10_mlac_vec2f_c;
+    ne10_mlac_vec3f = ne10_mlac_vec3f_c;
+    ne10_mlac_vec4f = ne10_mlac_vec4f_c;
+    ne10_add_float = ne10_add_float_c;
+    ne10_sub_float = ne10_sub_float_c;
+    ne10_mul_float = ne10_mul_float_c;
+    ne10_div_float = ne10_div_float_c;
+    ne10_mla_float = ne10_mla_float_c;
+    ne10_abs_float = ne10_abs_float_c;
+    ne10_len_vec2f = ne10_len_vec2f_c;
+    ne10_len_vec3f = ne10_len_vec3f_c;
+    ne10_len_vec4f = ne10_len_vec4f_c;
+    ne10_normalize_vec2f = ne10_normalize_vec2f_c;
+    ne10_normalize_vec3f = ne10_normalize_vec3f_c;
+    ne10_normalize_vec4f = ne10_normalize_vec4f_c;
+
+    ne10_abs_vec2f = ne10_abs_vec2f_c;
+    ne10_abs_vec3f = ne10_abs_vec3f_c;
+    ne10_abs_vec4f = ne10_abs_vec4f_c;
+    ne10_vmul_vec2f = ne10_vmul_vec2f_c;
+    ne10_vmul_vec3f = ne10_vmul_vec3f_c;
+    ne10_vmul_vec4f = ne10_vmul_vec4f_c;
+    ne10_vdiv_vec2f = ne10_vdiv_vec2f_c;
+    ne10_vdiv_vec3f = ne10_vdiv_vec3f_c;
+    ne10_vdiv_vec4f = ne10_vdiv_vec4f_c;
+    ne10_vmla_vec2f = ne10_vmla_vec2f_c;
+    ne10_vmla_vec3f = ne10_vmla_vec3f_c;
+    ne10_vmla_vec4f = ne10_vmla_vec4f_c;
+    ne10_add_vec2f = ne10_add_vec2f_c;
+    ne10_add_vec3f = ne10_add_vec3f_c;
+    ne10_add_vec4f = ne10_add_vec4f_c;
+    ne10_sub_vec2f = ne10_sub_vec2f_c;
+    ne10_sub_vec3f = ne10_sub_vec3f_c;
+    ne10_sub_vec4f = ne10_sub_vec4f_c;
+    ne10_dot_vec2f = ne10_dot_vec2f_c;
+    ne10_dot_vec3f = ne10_dot_vec3f_c;
+    ne10_dot_vec4f = ne10_dot_vec4f_c;
+    ne10_cross_vec3f = ne10_cross_vec3f_c;
+
+    ne10_addmat_2x2f = ne10_addmat_2x2f_c;
+    ne10_addmat_3x3f = ne10_addmat_3x3f_c;
+    ne10_addmat_4x4f = ne10_addmat_4x4f_c;
+    ne10_submat_2x2f = ne10_submat_2x2f_c;
+    ne10_submat_3x3f = ne10_submat_3x3f_c;
+    ne10_submat_4x4f = ne10_submat_4x4f_c;
+    ne10_mulmat_2x2f = ne10_mulmat_2x2f_c;
+    ne10_mulmat_3x3f = ne10_mulmat_3x3f_c;
+    ne10_mulmat_4x4f = ne10_mulmat_4x4f_c;
+    ne10_mulcmatvec_cm2x2f_v2f = ne10_mulcmatvec_cm2x2f_v2f_c;
+    ne10_mulcmatvec_cm3x3f_v3f = ne10_mulcmatvec_cm3x3f_v3f_c;
+    ne10_mulcmatvec_cm4x4f_v4f = ne10_mulcmatvec_cm4x4f_v4f_c;
+    ne10_detmat_2x2f = ne10_detmat_2x2f_c;
+    ne10_detmat_3x3f = ne10_detmat_3x3f_c;
+    ne10_detmat_4x4f = ne10_detmat_4x4f_c;
+    ne10_invmat_2x2f = ne10_invmat_2x2f_c;
+    ne10_invmat_3x3f = ne10_invmat_3x3f_c;
+    ne10_invmat_4x4f = ne10_invmat_4x4f_c;
+    ne10_transmat_4x4f = ne10_transmat_4x4f_c;
+    ne10_identitymat_4x4f = ne10_identitymat_4x4f_c;
+    ne10_transmat_3x3f = ne10_transmat_3x3f_c;
+    ne10_identitymat_3x3f = ne10_identitymat_3x3f_c;
+    ne10_transmat_2x2f = ne10_transmat_2x2f_c;
+    ne10_identitymat_2x2f = ne10_identitymat_2x2f_c;
+
     return NE10_OK;
 }
 

@@ -82,31 +82,32 @@ ne10_result_t ne10_init_dsp (ne10_int32_t is_NEON_available)
 #else
         ne10_iir_lattice_float = ne10_iir_lattice_float_c;
 #endif // ENABLE_NE10_IIR_LATTICE_FLOAT_NEON
+
+        return NE10_OK;
     }
-    else
-    {
-        ne10_fft_alloc_c2c_float32 = ne10_fft_alloc_c2c_float32_c;
-        ne10_fft_alloc_c2c_int32 = ne10_fft_alloc_c2c_int32_c;
-        ne10_fft_c2c_1d_float32 = ne10_fft_c2c_1d_float32_c;
-        ne10_fft_r2c_1d_float32 = ne10_fft_r2c_1d_float32_c;
-        ne10_fft_c2r_1d_float32 = ne10_fft_c2r_1d_float32_c;
 
-        ne10_fft_c2c_1d_int32 = ne10_fft_c2c_1d_int32_c;
-        ne10_fft_r2c_1d_int32 = ne10_fft_r2c_1d_int32_c;
-        ne10_fft_c2r_1d_int32 = ne10_fft_c2r_1d_int32_c;
+    ne10_fft_alloc_c2c_float32 = ne10_fft_alloc_c2c_float32_c;
+    ne10_fft_alloc_c2c_int32 = ne10_fft_alloc_c2c_int32_c;
+    ne10_fft_c2c_1d_float32 = ne10_fft_c2c_1d_float32_c;
+    ne10_fft_r2c_1d_float32 = ne10_fft_r2c_1d_float32_c;
+    ne10_fft_c2r_1d_float32 = ne10_fft_c2r_1d_float32_c;
 
-        ne10_fft_c2c_1d_int16 = ne10_fft_c2c_1d_int16_c;
-        ne10_fft_r2c_1d_int16 = ne10_fft_r2c_1d_int16_c;
-        ne10_fft_c2r_1d_int16 = ne10_fft_c2r_1d_int16_c;
+    ne10_fft_c2c_1d_int32 = ne10_fft_c2c_1d_int32_c;
+    ne10_fft_r2c_1d_int32 = ne10_fft_r2c_1d_int32_c;
+    ne10_fft_c2r_1d_int32 = ne10_fft_c2r_1d_int32_c;
 
-        ne10_fir_float = ne10_fir_float_c;
-        ne10_fir_decimate_float = ne10_fir_decimate_float_c;
-        ne10_fir_interpolate_float = ne10_fir_interpolate_float_c;
-        ne10_fir_lattice_float = ne10_fir_lattice_float_c;
-        ne10_fir_sparse_float = ne10_fir_sparse_float_c;
+    ne10_fft_c2c_1d_int16 = ne10_fft_c2c_1d_int16_c;
+    ne10_fft_r2c_1d_int16 = ne10_fft_r2c_1d_int16_c;
+    ne10_fft_c2r_1d_int16 = ne10_fft_c2r_1d_int16_c;
 
-        ne10_iir_lattice_float = ne10_iir_lattice_float_c;
-    }
+    ne10_fir_float = ne10_fir_float_c;
+    ne10_fir_decimate_float = ne10_fir_decimate_float_c;
+    ne10_fir_interpolate_float = ne10_fir_interpolate_float_c;
+    ne10_fir_lattice_float = ne10_fir_lattice_float_c;
+    ne10_fir_sparse_float = ne10_fir_sparse_float_c;
+
+    ne10_iir_lattice_float = ne10_iir_lattice_float_c;
+
     return NE10_OK;
 }
 
@@ -166,29 +167,29 @@ void (*ne10_fir_float) (const ne10_fir_instance_f32_t * S,
                         ne10_uint32_t blockSize);
 
 void (*ne10_fir_decimate_float) (
-    const ne10_fir_decimate_instance_f32_t * S,
-    ne10_float32_t * pSrc,
-    ne10_float32_t * pDst,
-    ne10_uint32_t blockSize);
+        const ne10_fir_decimate_instance_f32_t * S,
+        ne10_float32_t * pSrc,
+        ne10_float32_t * pDst,
+        ne10_uint32_t blockSize);
 
 void (*ne10_fir_interpolate_float) (
-    const ne10_fir_interpolate_instance_f32_t * S,
-    ne10_float32_t * pSrc,
-    ne10_float32_t * pDst,
-    ne10_uint32_t blockSize);
+        const ne10_fir_interpolate_instance_f32_t * S,
+        ne10_float32_t * pSrc,
+        ne10_float32_t * pDst,
+        ne10_uint32_t blockSize);
 
 void (*ne10_fir_lattice_float) (
-    const ne10_fir_lattice_instance_f32_t * S,
-    ne10_float32_t * pSrc,
-    ne10_float32_t * pDst,
-    ne10_uint32_t blockSize);
+        const ne10_fir_lattice_instance_f32_t * S,
+        ne10_float32_t * pSrc,
+        ne10_float32_t * pDst,
+        ne10_uint32_t blockSize);
 
 void (*ne10_fir_sparse_float) (
-    ne10_fir_sparse_instance_f32_t * S,
-    ne10_float32_t * pSrc,
-    ne10_float32_t * pDst,
-    ne10_float32_t * pScratchIn,
-    ne10_uint32_t blockSize);
+        ne10_fir_sparse_instance_f32_t * S,
+        ne10_float32_t * pSrc,
+        ne10_float32_t * pDst,
+        ne10_float32_t * pScratchIn,
+        ne10_uint32_t blockSize);
 
 void (*ne10_iir_lattice_float) (const ne10_iir_lattice_instance_f32_t * S,
                                 ne10_float32_t * pSrc,
