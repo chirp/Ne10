@@ -168,7 +168,7 @@ if(NE10_ENABLE_MATH)
 
     # Again, the custom call to this CMakeLists file implies to do this check
     # as the assembly Neon as not been done yet
-    if(NOT ${OS} STREQUAL "raspbian" AND NOT ${NE10_TARGET_ARCH} STREQUAL "aarch64")
+    if(${NE10_TARGET_ARCH} STREQUAL "armv7")
         set(NE10_INTRINSIC_SRCS ${NE10_INTRINSIC_SRCS} ${NE10_MATH_INTRINSIC_SRCS})
         if(IOS_PLATFORM)
             set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_IOS_NEON_SRCS})
