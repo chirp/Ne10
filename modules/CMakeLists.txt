@@ -371,10 +371,7 @@ endif(NE10_ENABLE_PHYSICS)
 # Convert the relative path to an absolute one - for the include propagation
 get_filename_component(INC ${PROJECT_SOURCE_DIR}/inc ABSOLUTE)
 
-set(CHIRP_MATHS_INCLUDE ${CHIRP_MATHS_INCLUDE}
-        ${INC}
-        PARENT_SCOPE
-        )
+set(CHIRP_MATHS_INCLUDE ${CHIRP_MATHS_INCLUDE} ${INC} PARENT_SCOPE)
 
 # Create the object gathering
 add_library(${OBJECT_FILE_NAME} OBJECT
@@ -385,10 +382,7 @@ add_library(${OBJECT_FILE_NAME} OBJECT
         )
 
 # Propagate object dependencies to the top level
-set(CHIRP_MATHS_OBJECT ${CHIRP_MATHS_OBJECT}
-        ${OBJECT_FILE_NAME}
-        PARENT_SCOPE
-        )
+set(CHIRP_MATHS_OBJECT ${CHIRP_MATHS_OBJECT} ${OBJECT_FILE_NAME} PARENT_SCOPE)
 
 # Like for libtomcrypt the pedantic flag triggers some warnings with GCC.
 get_target_property(flags ${OBJECT_FILE_NAME} COMPILE_OPTIONS)
