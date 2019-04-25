@@ -371,6 +371,7 @@ endif(NE10_ENABLE_PHYSICS)
 # Convert the relative path to an absolute one - for the include propagation
 get_filename_component(INC ${PROJECT_SOURCE_DIR}/inc ABSOLUTE)
 
+# Propagate the includes paths to the top level
 set(CHIRP_MATHS_INCLUDE ${CHIRP_MATHS_INCLUDE} ${INC} PARENT_SCOPE)
 
 # Create the object gathering
