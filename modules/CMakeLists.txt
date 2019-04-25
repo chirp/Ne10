@@ -173,7 +173,7 @@ if(NE10_ENABLE_MATH)
         if(IOS_PLATFORM)
             set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_IOS_NEON_SRCS})
         else(IOS_PLATFORM)
-                set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_NEON_SRCS})
+            set(NE10_NEON_SRCS ${NE10_NEON_SRCS} ${NE10_MATH_NEON_SRCS})
         endif(IOS_PLATFORM)
     endif()
 
@@ -368,6 +368,12 @@ if(NE10_ENABLE_PHYSICS)
     endif(IOS_PLATFORM)
 endif(NE10_ENABLE_PHYSICS)
 
+# Convert the relative path to an absolute one - for the include propagation
+get_filename_component(INC ${PROJECT_SOURCE_DIR}/inc ABSOLUTE)
+
+# Propagate the includes paths to the top level
+set(CHIRP_MATHS_INCLUDE ${CHIRP_MATHS_INCLUDE} ${INC} PARENT_SCOPE)
+
 # Create the object gathering
 add_library(${OBJECT_FILE_NAME} OBJECT
         ${NE10_C_SRCS}
@@ -375,6 +381,9 @@ add_library(${OBJECT_FILE_NAME} OBJECT
         ${NE10_NEON_SRCS}
         ${NE10_INIT_SRCS}
         )
+
+# Propagate object dependencies to the top level
+set(CHIRP_MATHS_OBJECT ${CHIRP_MATHS_OBJECT} ${OBJECT_FILE_NAME} PARENT_SCOPE)
 
 # Like for libtomcrypt the pedantic flag triggers some warnings with GCC.
 get_target_property(flags ${OBJECT_FILE_NAME} COMPILE_OPTIONS)
