@@ -32,7 +32,7 @@ set(OBJECT_NAME ne10)
 set(OBJECT_FILE_NAME _${OBJECT_NAME}_all_${VARIANT})
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-old-style-declaration")
-add_compile_options(-Wno-sign-compare)
+add_compile_options(-Wno-sign-compare -fno-strict-aliasing)
 
 # Define Function Enabling Macros
 include(../cmake/FunctionSwitch.cmake)
