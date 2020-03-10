@@ -31,7 +31,11 @@ set(OBJECT_NAME ne10)
 # Object file name in the file manager
 set(OBJECT_FILE_NAME _${OBJECT_NAME}_all_${VARIANT})
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-old-style-declaration")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} \
+    -Wno-old-style-declaration \
+    -Wno-implicit-fallthrough \
+    -Wno-address-of-packed-member")
+
 add_compile_options(-Wno-sign-compare -fno-strict-aliasing)
 
 # Define Function Enabling Macros
