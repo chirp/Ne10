@@ -31,7 +31,7 @@
 
 #include "NE10.h"
 
-#define CPUINFO_BUFFER_SIZE  (1024*4)
+#define CPUINFO_BUFFER_SIZE  (1024*5)
 
 // This local variable indicates whether or not the running platform supports ARM NEON
 ne10_result_t is_NEON_available = NE10_ERR;
