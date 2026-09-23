@@ -31,7 +31,7 @@
 
 #include "NE10.h"
 
-#define CPUINFO_BUFFER_SIZE  (1024*5)
+#define CPUINFO_BUFFER_SIZE  (1024*8)
 
 // This local variable indicates whether or not the running platform supports ARM NEON
 ne10_result_t is_NEON_available = NE10_ERR;
@@ -59,10 +59,15 @@ ne10_result_t ne10_init()
         return NE10_ERR;
     }
 
-    bytes    = fread (cpuinfo, 1, sizeof (cpuinfo), infofile);
+    // Read one byte less than the buffer so the result is always NUL terminated
+    // for the strstr() calls below, however much /proc/cpuinfo happens to hold.
+    // A filled buffer is not an error: the file is a procfs seq_file whose length
+    // grows with core count and architecture revision, while the tokens we want
+    // sit in the first core's Features line, within the first few dozen bytes.
+    bytes    = fread (cpuinfo, 1, sizeof (cpuinfo) - 1, infofile);
     fclose (infofile);
 
-    if (0 == bytes || CPUINFO_BUFFER_SIZE == bytes)
+    if (0 == bytes)
     {
         fprintf (stderr, "ERROR: Couldn't read the file \"/proc/cpuinfo\". NE10_init() failed.\n");
         return NE10_ERR;
