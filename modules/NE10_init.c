@@ -31,7 +31,9 @@
 
 #include "NE10.h"
 
-#define CPUINFO_BUFFER_SIZE  (1024*8)
+// Size of the head-of-file read below. Not load-bearing: the tokens searched for
+// are in the first core's Features line, so a truncated read finds them just as well.
+#define CPUINFO_BUFFER_SIZE  (1024*5)
 
 // This local variable indicates whether or not the running platform supports ARM NEON
 ne10_result_t is_NEON_available = NE10_ERR;
