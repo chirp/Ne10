@@ -26,12 +26,11 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 
 #include "NE10.h"
-
-#define CPUINFO_BUFFER_SIZE  (1024*5)
 
 // This local variable indicates whether or not the running platform supports ARM NEON
 ne10_result_t is_NEON_available = NE10_ERR;
@@ -45,12 +44,11 @@ ne10_result_t ne10_init()
 {
     ne10_result_t status = NE10_ERR;
 #ifndef __MACH__
-    FILE*   infofile = NULL;               // To open the file /proc/cpuinfo
-    ne10_int8_t    cpuinfo[CPUINFO_BUFFER_SIZE];  // The buffer to read in the string
-    ne10_uint32_t  bytes = 0;                     // Numbers of bytes read from the file
-    ne10_int32_t     i = 0;                         // Temporary loop counter
+    FILE*   infofile = NULL;   // To open the file /proc/cpuinfo
+    char*   line = NULL;       // getline() allocates and grows this as needed
+    size_t  capacity = 0;      // Current allocation of 'line'
+    ne10_int32_t lines_read = 0;
 
-    memset (cpuinfo, 0, CPUINFO_BUFFER_SIZE);
     infofile = fopen ("/proc/cpuinfo", "r");
 
     if (!infofile)
@@ -59,25 +57,36 @@ ne10_result_t ne10_init()
         return NE10_ERR;
     }
 
-    bytes    = fread (cpuinfo, 1, sizeof (cpuinfo), infofile);
+    // /proc/cpuinfo is a procfs seq_file, so its length is not known up front
+    // (stat() reports 0) and it grows with core count and architecture revision.
+    // Read it a line at a time and stop at the first NEON indicator: the tokens
+    // live inside a single Features line, so no match can straddle a line break.
+    while (getline (&line, &capacity, infofile) != -1)
+    {
+        char *c = line;
+        ++lines_read;
+
+        while ('\0' != *c)
+        {
+            *c = (char) tolower ((unsigned char) *c);
+            ++c;
+        }
+
+        if (strstr (line, "neon") != NULL ||
+            strstr (line, "asimd") != NULL)
+        {
+            is_NEON_available = NE10_OK;
+            break;
+        }
+    }
+
+    free (line);
     fclose (infofile);
 
-    if (0 == bytes || CPUINFO_BUFFER_SIZE == bytes)
+    if (0 == lines_read)
     {
         fprintf (stderr, "ERROR: Couldn't read the file \"/proc/cpuinfo\". NE10_init() failed.\n");
         return NE10_ERR;
-    }
-
-    while ('\0' != cpuinfo[i])
-    {
-        cpuinfo[i] = (ne10_int8_t) tolower (cpuinfo[i]);
-        ++i;
-    }
-
-    if (strstr ((const char *)cpuinfo, "neon") != NULL ||
-        strstr ((const char *)cpuinfo, "asimd") != NULL)
-    {
-        is_NEON_available = NE10_OK;
     }
 #else  //__MACH__
     is_NEON_available = NE10_OK;
